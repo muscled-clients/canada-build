@@ -50,7 +50,8 @@ class Chatbot:
         with open(filename, 'w') as f:
             json.dump(self.chat_history, f)
 
-
+storage_context = StorageContext.from_defaults(persist_dir='./storage')
+index1 = load_index_from_storage(storage_context)
 
 @app.get("/support/{question}")
 def read_root(question : str):
@@ -58,8 +59,6 @@ def read_root(question : str):
     #index1 = GPTVectorStoreIndex.from_documents(documents1)
     #index1.storage_context.persist()
     print('done')
-    storage_context = StorageContext.from_defaults(persist_dir='./storage')
-    index1 = load_index_from_storage(storage_context)
     bot = Chatbot(api_key, index=index1)
     print(question)
     response = bot.generate_response(question)
